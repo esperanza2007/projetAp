@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(content=~{::main}, activeTab='messages', pageTitle='Conversation')}">
+<body>
+<main th:fragment="main">
+    <link rel="stylesheet" th:href="@{/css/messages/conversation.css}">
+
+    <div class="chat-shell">
+
+        <div th:if="${tousUtilisateurs != null}" class="chat-sidebar">
+            <div class="chat-sidebar-head">
+                💬 Conversations
+            </div>
+            <div class="chat-sidebar-list">
+                <a th:each="u : ${tousUtilisateurs}"
+                   class="chat-user"
+                   th:classappend="${u.id == interlocuteur.id ? ' active' : ''}"
+                   th:attr="data-user-id=${u.id}"
+                   th:href="@{'/messages/' + ${u.id}}">
+                    <div class="chat-user-avatar">👤</div>
+                    <div>
+                        <div class="chat-user-name" th:text="${u.nom}">Nom</div>
+                        <div class="chat-user-role" th:text="${u.role}">ROLE</div>
+                    </div>
+                    <div class="chat-user-unread"></div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Zone de conversation -->
+        <div class="chat-main">
+
+            <!-- En-tête -->
+            <div class="chat-header">
+                <a th:href="@{/messages}" style="color:#1a9e5f;text-decoration:none;font-size:20px;">←</a>
+                <div style="width:38px;height:38px;border-radius:50%;background:#e8f5e9;
+                            display:flex;align-items:center;justify-content:center;">👤</div>
+                <div>
+                    <div style="font-weight:500;" th:text="${interlocuteur.nom}">Nom</div>
+                    <div style="font-size:12px;color:#888;" th:text="${interlocuteur.role}">ROLE</div>
+                </div>
+            </div>
+
+            <!-- Messages -->
+            <div id="messagesZone" class="chat-messages">
+
+                <div th:if="${messages.isEmpty()}"
+                     style="text-align:center;color:#aaa;margin:auto;font-size:14px;">
+                    Démarrez la conversation 👋
+                </div>
+
+                <div th:each="msg : ${messages}"
+                     th:with="estMoi=${msg.expediteur.id == moi.id}"
+                     th:style="${estMoi ? 'align-self:flex-end;' : 'align-self:flex-start;'}">
+                    <div th:style="${estMoi ?
+                        'background:#1a9e5f;color:white;' :
+                        'background:white;color:#333;border:1px solid #e0e0e0;'}"
+                         style="padding:10px 14px;border-radius:16px;max-width:280px;
+                                font-size:14px;line-height:1.5;word-wrap:break-word;">
+                        <span th:text="${msg.contenu}">Message</span>
+                    </div>
+                    <div style="font-size:11px;color:#aaa;margin-top:3px;text-align:right;"
+                         th:text="${#temporals.format(msg.dateEnvoi, 'dd/MM HH:mm')}">
+                        12:30
+                    </div>
+                </div>
+            </div>
+
+            <!-- Zone de saisie -->
+            <div class="chat-input-wrap">
+                <form id="chatForm" th:action="@{/messages/envoyer}" method="post" class="chat-form">
+                    <input type="hidden" name="destinataireId" th:value="${interlocuteur.id}">
+                    <textarea id="chatInput" name="contenu" rows="2" placeholder="Écrire un message..."
+                              class="chat-input" required
+                              onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();this.form.submit();}">
+                    </textarea>
+                    <button id="chatSubmit" type="submit" class="chat-send">
+                        ➤
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        window.chatConfig = {
+            interlocuteurId: /*[[${interlocuteur.id}]]*/ 0,
+            moiId: /*[[${moi.id}]]*/ 0
+        };
+    </script>
+    <script th:src="@{/js/messages/conversation.js}"></script>
+
+</main>
+</body>
+</html>

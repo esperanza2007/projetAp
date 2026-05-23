@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(content=~{::main}, pageTitle='Acces refuse', activeTab='none')}">
+<body>
+<main th:fragment="main">
+    <div style="max-width:680px;margin:2rem auto;background:#fff;border:1px solid #e9ecef;border-radius:14px;padding:1.5rem 1.2rem;text-align:center;">
+        <div style="font-size:2.2rem;margin-bottom:.3rem;">🔒</div>
+        <h1 style="margin:0 0 .6rem 0;font-size:1.4rem;color:#22322a;">Acces refuse</h1>
+        <p style="margin:0 0 1.2rem 0;color:#5d6b63;line-height:1.5;">
+            Vous n'avez pas l'autorisation d'acceder a cette page.
+            Seuls les administrateurs peuvent ouvrir cette section.
+        </p>
+        <a th:href="@{/}" class="btn btn-primary">Retour a l'accueil</a>
+    </div>
+</main>
+</body>
+</html>

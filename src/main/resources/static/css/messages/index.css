@@ -1,0 +1,100 @@
+.contact-panel {
+    background: linear-gradient(135deg, #f8fff9 0%, #ffffff 100%);
+    border: 1px solid #dcefe1;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 18px;
+}
+.role-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 10px 0 14px;
+}
+.role-tab {
+    border: 1px solid #d8e8dd;
+    background: #ffffff;
+    color: #2e4b36;
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.role-tab.active {
+    background: #1a9e5f;
+    border-color: #1a9e5f;
+    color: #ffffff;
+}
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
+}
+.contact-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: #ffffff;
+    border: 1px solid #e2ebe5;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #22322a;
+    transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+.contact-pill:hover {
+    border-color: #87cfa6;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(24, 91, 53, 0.08);
+}
+.role-chip {
+    margin-left: auto;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 3px 8px;
+    background: #eef6f1;
+    color: #3f6f53;
+}
+.conversation-card {
+    background: #ffffff;
+    border: 1px solid #e0e8e3;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+.conversation-card:hover {
+    border-color: #b8d8c5;
+    box-shadow: 0 6px 14px rgba(18, 72, 43, 0.07);
+}
+.admin-quick-link {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: #1a9e5f;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 12px;
+}
+.unread-badge {
+    display: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: #1a9e5f;
+}
+@media (max-width: 768px) {
+    .contact-panel { padding: 12px; border-radius: 12px; }
+    .role-tabs { gap: 6px; margin: 8px 0 12px; }
+    .role-tab { padding: 6px 10px; font-size: 11px; }
+    .contact-grid { grid-template-columns: 1fr; gap: 8px; }
+    .contact-pill { padding: 9px 10px; }
+    .conversation-card a { padding: 12px 12px !important; gap: 10px !important; }
+    .admin-quick-link { display: inline-flex !important; }
+}

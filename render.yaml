@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: agriprix
+    runtime: docker
+    rootDir: agriprix-fix
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: production
+databases:
+  - name: agriprix-db
+    databaseName: agriprix
+    user: agriuser
+    plan: free
