@@ -48,6 +48,24 @@
                 </select>
             </div>
 
+            <div style="margin-bottom:1rem;">
+                <label style="display:block;font-weight:500;margin-bottom:6px;">Prix actuel (FCFA) *</label>
+                <input type="number" name="prixActuel" required min="0" step="1"
+                       th:value="${prixActuel != null ? prixActuel : ''}"
+                       placeholder="ex: 18500"
+                       style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;
+                              font-size:15px;box-sizing:border-box;">
+            </div>
+
+            <div style="margin-bottom:1.5rem;">
+                <label style="display:block;font-weight:500;margin-bottom:6px;">Marché *</label>
+                <input type="text" name="marche" required
+                       th:value="${marche != null ? marche : 'Maroua'}"
+                       placeholder="ex: Maroua"
+                       style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;
+                              font-size:15px;box-sizing:border-box;">
+            </div>
+
             <div style="display:flex;gap:10px;">
                 <button type="submit"
                         style="flex:1;background:#1a9e5f;color:white;padding:12px;border:none;

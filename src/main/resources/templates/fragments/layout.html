@@ -92,6 +92,13 @@
         <div class="navbar-user">
             👤 <span sec:authentication="name">Utilisateur</span>
         </div>
+        <form th:action="@{/logout}" method="post" style="margin-left:8px;">
+            <button type="submit"
+                    style="border:1px solid #d8dee3;background:#fff;color:#2c3e35;border-radius:8px;
+                           padding:6px 9px;font-size:12px;cursor:pointer;">
+                🚪 Déconnexion
+            </button>
+        </form>
     </div>
 </nav>
 

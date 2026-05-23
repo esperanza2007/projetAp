@@ -1,6 +1,7 @@
 package cm.agriprix.controller;
 
 import cm.agriprix.model.Produit;
+import cm.agriprix.model.PrixHistorique;
 import cm.agriprix.model.Utilisateur;
 import cm.agriprix.repository.ProduitRepository;
 import cm.agriprix.repository.PrixHistoriqueRepository;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.time.LocalDate;
 
 @Controller
 @PreAuthorize("hasRole('ADMIN')")
@@ -40,6 +42,8 @@ public class AdminController {
     public String formulaireAjout(Model model) {
         model.addAttribute("categories", List.of("Céréales", "Légumineuses", "Rente", "Légumes", "Fruits"));
         model.addAttribute("produit", new Produit());
+        model.addAttribute("prixActuel", null);
+        model.addAttribute("marche", "Maroua");
         model.addAttribute("mode", "ajout");
         return "admin/produit-form";
     }
@@ -49,8 +53,11 @@ public class AdminController {
     public String ajouterProduit(@RequestParam String nom,
                                  @RequestParam String categorie,
                                  @RequestParam String emoji,
+                                 @RequestParam double prixActuel,
+                                 @RequestParam String marche,
                                  RedirectAttributes redirectAttributes) {
-        produitRepository.save(new Produit(nom.trim(), categorie, emoji.trim()));
+        Produit produit = produitRepository.save(new Produit(nom.trim(), categorie, emoji.trim()));
+        prixHistoriqueRepository.save(new PrixHistorique(produit, prixActuel, LocalDate.now(), marche.trim()));
         redirectAttributes.addFlashAttribute("succes", "Produit \"" + nom + "\" ajouté avec succès !");
         return "redirect:/admin";
     }
@@ -60,7 +67,10 @@ public class AdminController {
     public String formulaireModifier(@PathVariable Long id, Model model) {
         Produit produit = produitService.getProduitById(id);
         if (produit == null) return "error";
+        PrixHistorique latest = produitService.getLatestPrix(produit);
         model.addAttribute("produit", produit);
+        model.addAttribute("prixActuel", latest != null ? latest.getPrix() : null);
+        model.addAttribute("marche", latest != null ? latest.getMarche() : "Maroua");
         model.addAttribute("categories", List.of("Céréales", "Légumineuses", "Rente", "Légumes", "Fruits"));
         model.addAttribute("mode", "modification");
         return "admin/produit-form";
@@ -72,6 +82,8 @@ public class AdminController {
                                   @RequestParam String nom,
                                   @RequestParam String categorie,
                                   @RequestParam String emoji,
+                                  @RequestParam double prixActuel,
+                                  @RequestParam String marche,
                                   RedirectAttributes redirectAttributes) {
         Produit produit = produitService.getProduitById(id);
         if (produit == null) return "error";
@@ -79,6 +91,7 @@ public class AdminController {
         produit.setCategorie(categorie);
         produit.setEmoji(emoji.trim());
         produitRepository.save(produit);
+        prixHistoriqueRepository.save(new PrixHistorique(produit, prixActuel, LocalDate.now(), marche.trim()));
         redirectAttributes.addFlashAttribute("succes", "Produit \"" + nom + "\" modifié avec succès !");
         return "redirect:/admin";
     }
